@@ -1,43 +1,58 @@
 /**
- * mly_ini.h - v1.0.1 - Public Domain / zlib Config Parser
+ * ===========================================================================
+ *   mly_ini.h - v1.1.0 - Public Domain / zlib Config Parser
+ *   STB-style single-header library for loading and parsing .ini config files.
  * 
- * STB-style single-header library for loading and parsing .ini config files.
- *
- * LICENSE (zlib):
- * Copyright (c) 2026 ManlyTube (https://github.com/SirManlyTube)
-
- * This software is provided 'as-is', without any express or implied
- * warranty. In no event will the authors be held liable for any damages
- * arising from the use of this software.
-
- * Permission is granted to anyone to use this software for any purpose,
- * including commercial applications, and to alter it and redistribute it
- * freely, subject to the following restrictions:
-
- * 1. The origin of this software must not be misrepresented; you must not
- *    claim that you wrote the original software. If you use this software
- *    in a product, an acknowledgment in the product documentation would be
- *    appreciated but is not required.
- * 2. Altered source versions must be plainly marked as such, and must not be
- *    misrepresented as being the original software.
- * 3. This notice may not be removed or altered from any source distribution.
+ *   SEMANTIC VERSIONING CONTRACT:
+ *   Only symbols prefixed with 'MLY_Ini' declared outside of the
+ *   implementation block constitute the public API.
+ * 
+ *   Any symbols prefixed with 'mly__ini_' or located inside the
+ *   MLY_INI_IMPLEMENTATION guard are private implementation details
+ *   and MAY change breakingly in PATCH or MINOR releases.
+ * ===========================================================================
  */
 
 /**
- * I started this project because I wanted to just see if I could make a .ini parser
- * and now I think what I have ended up with has the basis for something more than that.
- * I want to eventually take this to being able to have expressions as part of field
- * definitions and whatnot but for now the architecture is nowhere near suited for that
- * and I also don't have the knowledge yet to achieve that so I am leaving it off with
- * where it is at for now.
+ * ===========================================================================
+ *   LICENSE (zlib):
+ *   Copyright (c) 2026 ManlyTube (https://github.com/SirManlyTube)
+ *
+ *   This software is provided 'as-is', without any express or implied
+ *   warranty. In no event will the authors be held liable for any damages
+ *   arising from the use of this software.
+ *
+ *   Permission is granted to anyone to use this software for any purpose,
+ *   including commercial applications, and to alter it and redistribute it
+ *   freely, subject to the following restrictions:
+ *
+ *   1. The origin of this software must not be misrepresented; you must not
+ *      claim that you wrote the original software. If you use this software
+ *      in a product, an acknowledgment in the product documentation would be
+ *      appreciated but is not required.
+ *   2. Altered source versions must be plainly marked as such, and must not be
+ *      misrepresented as being the original software.
+ *   3. This notice may not be removed or altered from any source distribution.
+ * ===========================================================================
+ */
+
+/**
+ * ===========================================================================
+ *   I started this project because I wanted to just see if I could make a .ini parser
+ *   and now I think what I have ended up with has the basis for something more than that.
+ *   I want to eventually take this to being able to have expressions as part of field
+ *   definitions and whatnot but for now the architecture is nowhere near suited for that
+ *   and I also don't have the knowledge yet to achieve that so I am leaving it off with
+ *   where it is at for now.
  * 
- * TODO:
- * - Refactor MLY_IniASTNode to be able to handle expressions
- * - Improve the tokenizer to better handle edge-cases
- * - Optimize the parsing loop to better handle edge-cases
- * - Make better error handling
- * - Remove redudant code
- * - Write documentation
+ *   TODO:
+ *   - Refactor MLY_IniASTNode to be able to handle expressions
+ *   - Improve the tokenizer to better handle edge-cases
+ *   - Optimize the parsing loop to better handle edge-cases
+ *   - Make better error handling
+ *   - Remove redudant code
+ *   - Write documentation
+ * ===========================================================================
  * 
  * I would imagine there are ways to reduce the memory footprint of this library as well
  * and I just am simply not aware of what could be done.
@@ -47,9 +62,11 @@
 #define MLY_INI_H
 
 /**
+ * ===========================================================================
  * I honestly don't know how any of this platform stuff works,
  * I just copied it from SDL3 for most of it.
  * I also don't know how much of this I need so feel free to remove some or all of it.
+ * ===========================================================================
  */
 
 #ifndef MLY_PLATFORM_H
@@ -440,9 +457,9 @@ extern "C" {
 
 #ifndef _MSC_VER
     #ifdef __cplusplus
-        #define MLY_INI_INLINE inline
+        #define MLYINLINE inline
     #else
-        #define MLY_INI_INLINE
+        #define MLYINLINE
     #endif /* __cplusplus */
 #else
     #define MLYINLINE __forceinline
@@ -718,8 +735,6 @@ extern "C" {
 
         MLY_IniFieldList* globals;
         MLY_IniSectionList* sections;
-
-        mly_bool_t openCreatedFile;
     } MLY_IniFile;
 
     typedef struct MLY_IniLexicalAnalyzer
