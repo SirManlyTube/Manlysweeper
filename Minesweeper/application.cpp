@@ -120,19 +120,19 @@ void Application::LoadTextures()
     m_textureRegistry = std::make_unique<TextureRegistry>();
     SetGlobalTextureRegistry(m_textureRegistry);
 
-    m_textureRegistry->RegisterTexture(MINESWEEPER_TILE_EMPTY, std::make_unique<Texture>("assets/textures/MinesweeperTile.bmp"));
-    m_textureRegistry->RegisterTexture(MINESWEEPER_TILE_1, std::make_unique<Texture>("assets/textures/MinesweeperTile1.bmp"));
-    m_textureRegistry->RegisterTexture(MINESWEEPER_TILE_2, std::make_unique<Texture>("assets/textures/MinesweeperTile2.bmp"));
-    m_textureRegistry->RegisterTexture(MINESWEEPER_TILE_3, std::make_unique<Texture>("assets/textures/MinesweeperTile3.bmp"));
-    m_textureRegistry->RegisterTexture(MINESWEEPER_TILE_4, std::make_unique<Texture>("assets/textures/MinesweeperTile4.bmp"));
-    m_textureRegistry->RegisterTexture(MINESWEEPER_TILE_5, std::make_unique<Texture>("assets/textures/MinesweeperTile5.bmp"));
-    m_textureRegistry->RegisterTexture(MINESWEEPER_TILE_6, std::make_unique<Texture>("assets/textures/MinesweeperTile6.bmp"));
-    m_textureRegistry->RegisterTexture(MINESWEEPER_TILE_7, std::make_unique<Texture>("assets/textures/MinesweeperTile7.bmp"));
-    m_textureRegistry->RegisterTexture(MINESWEEPER_TILE_8, std::make_unique<Texture>("assets/textures/MinesweeperTile8.bmp"));
-    m_textureRegistry->RegisterTexture(MINESWEEPER_TILE_FLAG, std::make_unique<Texture>("assets/textures/MinesweeperFlag.bmp"));
-    m_textureRegistry->RegisterTexture(MINESWEEPER_TILE_BOMB, std::make_unique<Texture>("assets/textures/MinesweeperBomb.bmp"));
-    m_textureRegistry->RegisterTexture(MINESWEEPER_TILE_COLLAPSED, std::make_unique<Texture>("assets/textures/MinesweeperTileCollapsed.bmp"));
-    m_textureRegistry->RegisterTexture(MINESWEEPER_TILE_HOVERING, std::make_unique<Texture>("assets/textures/MinesweeperTileHovering.bmp"));
+    m_textureRegistry->RegisterTexture(MINESWEEPER_TILE_EMPTY,      std::make_unique<Texture>("assets/textures/MinesweeperTile.bmp"));
+    m_textureRegistry->RegisterTexture(MINESWEEPER_TILE_1,          std::make_unique<Texture>("assets/textures/MinesweeperTile1.bmp"));
+    m_textureRegistry->RegisterTexture(MINESWEEPER_TILE_2,          std::make_unique<Texture>("assets/textures/MinesweeperTile2.bmp"));
+    m_textureRegistry->RegisterTexture(MINESWEEPER_TILE_3,          std::make_unique<Texture>("assets/textures/MinesweeperTile3.bmp"));
+    m_textureRegistry->RegisterTexture(MINESWEEPER_TILE_4,          std::make_unique<Texture>("assets/textures/MinesweeperTile4.bmp"));
+    m_textureRegistry->RegisterTexture(MINESWEEPER_TILE_5,          std::make_unique<Texture>("assets/textures/MinesweeperTile5.bmp"));
+    m_textureRegistry->RegisterTexture(MINESWEEPER_TILE_6,          std::make_unique<Texture>("assets/textures/MinesweeperTile6.bmp"));
+    m_textureRegistry->RegisterTexture(MINESWEEPER_TILE_7,          std::make_unique<Texture>("assets/textures/MinesweeperTile7.bmp"));
+    m_textureRegistry->RegisterTexture(MINESWEEPER_TILE_8,          std::make_unique<Texture>("assets/textures/MinesweeperTile8.bmp"));
+    m_textureRegistry->RegisterTexture(MINESWEEPER_TILE_FLAG,       std::make_unique<Texture>("assets/textures/MinesweeperFlag.bmp"));
+    m_textureRegistry->RegisterTexture(MINESWEEPER_TILE_BOMB,       std::make_unique<Texture>("assets/textures/MinesweeperBomb.bmp"));
+    m_textureRegistry->RegisterTexture(MINESWEEPER_TILE_COLLAPSED,  std::make_unique<Texture>("assets/textures/MinesweeperTileCollapsed.bmp"));
+    m_textureRegistry->RegisterTexture(MINESWEEPER_TILE_HOVERING,   std::make_unique<Texture>("assets/textures/MinesweeperTileHovering.bmp"));
 }
 
 void Application::CreateTileBuffers()
