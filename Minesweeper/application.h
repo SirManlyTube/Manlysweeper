@@ -1,6 +1,9 @@
 #pragma once
 
 #include <chrono>
+#include <atomic>
+#include <thread>
+#include <condition_variable>
 
 #include "precision_delay.h"
 #include "minesweeper_action.h"
