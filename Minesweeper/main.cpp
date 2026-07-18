@@ -1,6 +1,4 @@
-﻿/* Minesweeper Game */
-
-#include <print>
+﻿#include <print>
 
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
@@ -15,11 +13,9 @@ int main(int argc, char* argv[])
 #ifndef NDEBUG
     try
     {
-#endif
-    #ifdef NDEBUG
-        bool sandboxModeEnabled = false;
-    #else
         bool sandboxModeEnabled = true;
+    #else
+        bool sandboxModeEnabled = false;
     #endif
         for (int i = 0; i < argc; ++i)
         {
