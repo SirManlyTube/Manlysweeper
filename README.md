@@ -6,5 +6,5 @@
 3. Use flags by right clicking to mark where you think mines are to prevent yourself from accidentally clicking on one.
 4. Clicking on any mine will instantly lose the game.
 5. You can launch the game through the command line by using the command "Minesweeper.exe" in command prompt or "./Minesweeper.exe" in powershell.
-6. Launching the game with the command line argument "--sandbox" will enable debug tools. Editing game.ini to have "sandbox = true|yes|on" under the debug section makes this permanent.
+6. Launching the game with the command line argument "--sandbox" will enable debug tools. Editing game.ini to have "sandbox = (true | yes | on)" under the debug section makes this permanent.
 7. Try to get the highest score you can, good luck!
