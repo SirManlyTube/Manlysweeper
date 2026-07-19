@@ -1,1 +1,1 @@
-# I do not claim to own Minesweeper as a concept but I do, however, claim to own the code for this game specifically called "Manlysweeper".
+# I do not claim to own Minesweeper as a concept but I do, however, claim ownership of the code for this game specifically called "Manlysweeper", with the exception of SDL3, Freetype, and STB image (Licenses for those in their respective code).
