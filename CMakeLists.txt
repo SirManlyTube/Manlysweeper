@@ -1,5 +1,5 @@
 ﻿cmake_minimum_required(VERSION 3.12)
 
-project("Minesweeper")
+project("Manlysweeper")
 
-add_subdirectory("Minesweeper")
+add_subdirectory("Manlysweeper")
