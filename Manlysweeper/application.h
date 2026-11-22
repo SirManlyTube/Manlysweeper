@@ -36,6 +36,8 @@ private:
     std::atomic<int> m_windowWidth = 1280;
     std::atomic<int> m_windowHeight = 720;
 
+    char* m_rootPath = nullptr;
+
     MinesweeperActionQueue m_actionQueue;
 
     std::atomic<bool> m_running{ true };
@@ -111,6 +113,8 @@ private:
 
     bool m_firstClick = false;
     bool m_forceTick = false;
+
+    float m_richPresenceTimer = 0.0f;
 
     std::thread m_renderThread;
     std::thread m_gameThread;

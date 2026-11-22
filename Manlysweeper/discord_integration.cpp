@@ -78,10 +78,6 @@ namespace mly
                 {
                     std::cerr << "Failed to update Rich Presence: [" << result.ErrorCode() << "] " << result.Error() << "\n";
                 }
-                else
-                {
-                    std::cout << "Successfully updated Rich Presence\n";
-                }
             });
         }
     }

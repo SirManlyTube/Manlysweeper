@@ -8,6 +8,40 @@
 #define DISCORDPP_IMPLEMENTATION
 #include <discordpp.h>
 
+#include <string>
+#include <iostream>
+
+#ifdef _WIN32
+#pragma comment(lib, "Shell32.lib")
+#include <windows.h>
+#include <shlobj.h>
+#include <filesystem>
+#endif
+
+std::string GetSaveLocation()
+{
+#ifdef _WIN32
+    PWSTR rawPath = nullptr;
+    HRESULT hr = SHGetKnownFolderPath(FOLDERID_LocalAppData, 0, nullptr, &rawPath);
+
+    if (FAILED(hr) || rawPath == nullptr)
+    {
+        if (rawPath != nullptr)
+        {
+            CoTaskMemFree(rawPath);
+        }
+        throw std::runtime_error("Failed to retrieve LocalAppData path.");
+    }
+
+    std::filesystem::path result(rawPath);
+    CoTaskMemFree(rawPath);
+
+    return result.string() + "/ManlyTube/Manlysweeper";
+#else
+    return "";
+#endif
+}
+
 Application::~Application()
 {
     SaveSettings();
@@ -59,7 +93,7 @@ void Application::InitializeVideo()
 
 void Application::CreateSDLWindow()
 {
-    m_window = SDL_CreateWindow("Minesweeper", m_windowWidth, m_windowHeight, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+    m_window = SDL_CreateWindow("Manlysweeper", m_windowWidth, m_windowHeight, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
     if (m_window == nullptr)
     {
         throw std::runtime_error(std::format("Failed to create SDL3 window: {}", SDL_GetError()));
@@ -297,7 +331,6 @@ void Application::ToggleFlag(const glm::ivec2& position) noexcept
         tile->textureID = MINESWEEPER_TILE_FLAG;
         m_flagsRemaining -= 1;
     }
-    UpdateRichPresenceState();
 }
 
 void SDLCALL Application::AudioLoopCallback(void* userdata, SDL_AudioStream* audioStream, int additionalAmount, int totalAmount)
@@ -357,7 +390,6 @@ void Application::KillPlayer()
     m_dead = true;
     m_won = false;
     m_targetTintColor = glm::vec3(1.0f, 0.5f, 0.5f);
-    UpdateRichPresenceState();
 }
 
 void Application::PlayerWon()
@@ -366,7 +398,6 @@ void Application::PlayerWon()
     m_won = true;
     m_targetTintColor = glm::vec3(1.0f, 0.8f, 0.3f);
     m_wins += 1;
-    UpdateRichPresenceState();
 }
 
 void Application::FlagMines() noexcept
@@ -692,6 +723,18 @@ void Application::RenderThread()
                 0.0f, 1.0f
             );
 
+            if (m_hoveredTile.x >= 0 && m_hoveredTile.x < m_tileMap->mapSize.x && m_hoveredTile.y >= 0 && m_hoveredTile.y < m_tileMap->mapSize.y)
+            {
+                m_textRenderer->RenderText(
+                    std::format("({}, {})", m_hoveredTile.x, (m_tileMap->mapSize.y - 1) - m_hoveredTile.y),
+                    0.0f,
+                    m_font->PointToPixelsY(m_font->GetSize() * 6.0f),
+                    1.0f,
+                    glm::vec3(1.0f, 1.0f, 1.0f),
+                    0.0f, 1.0f
+                );
+            }
+
             if (m_sandboxMode)
             {
                 m_textRenderer->RenderText(
@@ -814,7 +857,6 @@ void Application::GameThread()
                 m_flagsRemaining += 1;
             }
             m_score += 1;
-            UpdateRichPresenceState();
             m_safeTilesCollapsed += 1;
             if (m_safeTilesCollapsed == m_tileMap->tiles.size() - m_tileMap->bombCount)
             {
@@ -851,10 +893,14 @@ void Application::GameThread()
 void Application::MainLoop()
 {
     SDL_Event event;
+    auto lastTime = std::chrono::steady_clock::now();
     while (m_running)
     {
         m_hoveredTile = GetHoveredTilePosition();
-        discordpp::RunCallbacks();
+
+        auto currentTime = std::chrono::steady_clock::now();
+        float deltaTime = std::chrono::duration<float, std::chrono::milliseconds::period>(currentTime - lastTime).count() * 0.001f;
+        lastTime = currentTime;
 
         while (SDL_PollEvent(&event))
         {
@@ -985,12 +1031,21 @@ void Application::MainLoop()
             }
         }
 
+        m_richPresenceTimer -= deltaTime;
+        if (m_richPresenceTimer <= 0.0f)
+        {
+            UpdateRichPresenceState();
+        }
+
+        discordpp::RunCallbacks();
+
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
 }
 
 void Application::UpdateRichPresenceState()
 {
+    m_richPresenceTimer = 10.0f;
     if (m_dead)
     {
         mly::discord::RichPresenceIntegration::SetDetails("Bro blew up lmao");
@@ -1005,7 +1060,15 @@ void Application::UpdateRichPresenceState()
 
 void Application::LoadIniFile()
 {
-    MLY_IniFile* iniFile = MLY_IniOpenFile("game.ini", MLY_INI_FILE_FLAGS_READ | MLY_INI_FILE_FLAGS_CREATE_IF_MISSING);
+    std::string saveLocation = GetSaveLocation();
+    std::string filepath = saveLocation + "/game.ini";
+
+    if (!std::filesystem::exists(saveLocation))
+    {
+        std::filesystem::create_directories(saveLocation);
+    }
+
+    MLY_IniFile* iniFile = MLY_IniOpenFile(filepath.c_str(), MLY_INI_FILE_FLAGS_READ | MLY_INI_FILE_FLAGS_CREATE_IF_MISSING);
 
     if (iniFile == nullptr)
     {
@@ -1047,7 +1110,15 @@ void Application::LoadIniFile()
 
 void Application::SaveSettings()
 {
-    MLY_IniFile* iniFile = MLY_IniOpenFile("game.ini", MLY_INI_FILE_FLAGS_DEFAULT);
+    std::string saveLocation = GetSaveLocation();
+    std::string filepath = saveLocation + "/game.ini";
+
+    if (!std::filesystem::exists(saveLocation))
+    {
+        std::filesystem::create_directories(saveLocation);
+    }
+
+    MLY_IniFile* iniFile = MLY_IniOpenFile(filepath.c_str(), MLY_INI_FILE_FLAGS_DEFAULT);
 
     if (iniFile == nullptr)
     {
